@@ -1,0 +1,53 @@
+{
+    "SystemLog": [
+        {
+	    "id": 1,
+            "TimeGenerated": "2024-06-21 19:17:34",
+            "Code": 1423,
+            "Severity": "Error",
+            "Message": "Unable to connect to pricing service"
+        },
+        {
+	    "id": 2,
+            "TimeGenerated": "2024-06-21 19:18:23",
+            "Code": 1420,
+            "Severity": "Information",
+            "Message": "Pricing service connection established."
+        },
+        {
+            "id": 3,
+            "TimeGenerated": "2024-06-21 21:45:13",
+            "Code": 2011,
+            "Severity": "Warning",
+            "Message": "Module failed and was restarted"
+        },
+        {
+            "id": 4,
+            "TimeGenerated": "2024-06-21 23:53:31",
+            "Code": 4100,
+            "Severity": "Information",
+            "Message": "Nightly backup complete"
+        },
+	{
+            "id": 5,
+            "TimeGenerated": "2024-06-21 23:53:31",
+            "Code": 4100,
+            "Severity": "Information",
+            "Message": "Successfully logged in as: wchung/eric"
+        },
+	{
+            "id": 6,
+            "TimeGenerated": "2024-06-21 23:53:31",
+            "Code": 3100,
+            "Severity": "Debug",
+            "Message": "BulkOpsClient.doImport(): Execution begin"
+        },
+	{
+            "id": 7,
+            "TimeGenerated": "2024-06-21 23:53:31",
+            "Code": 4100,
+            "Severity": "Information",
+            "Message": "CSVDataSender.sendCSVData(): Starting thread 0"
+        }            
+    ]
+}

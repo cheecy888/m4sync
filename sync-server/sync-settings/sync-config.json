@@ -1,0 +1,178 @@
+{  
+  "Demopest": {
+		"Name":"DemoPest",
+    	"Source": {
+			"name": "proline",
+			"defaultquery":"SELECT TOP 100 PERCENT S4.[Desc] As [GLName], (CASE WHEN TMF.DocType='P' THEN (CASE WHEN TDF.ID IS NULL THEN TMF.OAmt ELSE -TDF.OAmt END) ELSE (CASE WHEN TDF.ID IS NULL THEN TMF.OAmt ELSE (CASE WHEN TDF.AccType='S' THEN -TDF.OAmt ELSE TDF.OAmt END) END) END) as OAmt, TMF.UDNo As [RcpNo], TMF.RefNo,TMF.DueDT, TMF.DocDT, TDF.[Desc] As [DetailDescp],TMF.Remarks As [Descp],S1.[Desc] As [PayMode],S2.UGC As [CashCode], S15.[Desc] As [DocType], TMF.Narration,CMF.Remarks, CONCAT(TMF.Narration,' ',CMF.Remarks) as [Notes], AMF.AccNo, A.OAmt as InvAmt, TSTF.UDNo As [InvNo], S4.UGC As [GLCode], CASE TSTF.SS WHEN 'P' THEN (CASE WHEN TSTF.TS='C' THEN 'Cancelled' ELSE 'Posted' END) WHEN 'C' THEN 'Cancelled' WHEN 'T' THEN 'Template' ELSE (CASE WHEN TSTF.TS='D' THEN 'Draft' ELSE 'Active' END) END As [Status], TMF.CC, (CASE WHEN TMF.DocType='P' THEN (CASE WHEN TDF.ID IS NULL THEN -TMF.LAmt ELSE -TDF.LAmt END) ELSE (CASE WHEN TDF.ID IS NULL THEN TMF.LAmt ELSE (CASE WHEN TDF.AccType='S' THEN -TDF.LAmt ELSE TDF.LAmt END) END) END) as LAmt FROM TMF LEFT JOIN TDF ON TMF.ID=TDF.DocNo LEFT JOIN TSTF ON TDF.XDocNo=TSTF.ID AND TDF.InstNo=TSTF.InstNo AND TDF.AccID=TSTF.AcctID LEFT JOIN AMF ON TMF.AccID=AMF.ID LEFT JOIN CMF ON TSTF.CMFID=CMF.ID LEFT JOIN AMF AMF1 ON TSTF.Handler= AMF1.ID LEFT JOIN AMF AMF2 ON TSTF.AcctID= AMF2.ID LEFT JOIN (SELECT MAX(CommPct) As [CommPct],SUM(OComm) As [CommAmt],TSTFID FROM TSTD GROUP BY TSTFID) T ON T.TSTFID=TSTF.ID LEFT JOIN AMF Sales ON CMF.Sales= Sales.ID LEFT JOIN AMF Introducer ON CMF.Contractor= Introducer.ID LEFT JOIN (SELECT DocDT,LAmt,OAmt,DocNo,InstNo,AccID,GLID FROM AOF WHERE TrxSeq=0) A ON A.DocNo=TDF.XDocNo AND A.InstNo=TDF.InstNo AND A.AccID=TDF.AccID LEFT JOIN AOF ON TDF.XDocNo=AOF.DocNo AND TDF.InstNo=AOF.InstNo AND TDF.AccID=AOF.AccID AND TDF.DocNo=AOF.SrcNo AND TDF.DocType=AOF.TrxType LEFT JOIN SGM S1 ON TMF.G50= S1.GID LEFT JOIN SGM S2 ON TMF.CashID= S2.GID LEFT JOIN SGM S3 ON CMF.G200= S3.GID LEFT JOIN SGM S4 ON (CASE WHEN TDF.AccType='S' THEN TDF.AccID ELSE -1 END)= S4.GID LEFT JOIN SGM S5 ON A.GLID= S5.GID LEFT JOIN SGM S6 ON TMF.OGID= S6.GID INNER JOIN SGM S15 ON TMF.G15= S15.GID LEFT JOIN SGM S31 ON ISNULL(AMF2.G31,AMF.G31)= S31.GID LEFT JOIN (SELECT LXAmt As [LAmt],OXAmt As [OAmt],OAmt As [Amt],AccID,Ref1,Ref2,RefNo,OGID,GLID,[Desc] FROM AOF WHERE DocNo=0 AND TrxSeq=0) OS ON OS.AccID=TMF.AccID AND OS.Ref1=TMF.DocType AND OS.Ref2=TMF.UDNo AND ISNULL(TMF.RefNo,'')=ISNULL(OS.RefNo,'') AND OS.OGID=TMF.OGID AND OS.GLID=TDF.AccID AND OS.Amt=TDF.OAmt AND OS.[Desc]=SUBSTRING(RTRIM(LTRIM((CASE WHEN TDF.AccType='S' AND LEN(ISNULL(S4.[Desc],''))>0 THEN S4.[Desc]+'*' ELSE '' END)+(CASE WHEN LEN(ISNULL(TDF.[Desc],''))>0 THEN TDF.[Desc] ELSE ISNULL(TMF.Remarks,'') END))),1,255) LEFT JOIN SGM S35 ON S35.GID=AMF2.G35  WHERE (TMF.DocDT BETWEEN '01 Jan 2000' AND '11 Mar 2025') AND TMF.DocType IN('P','T','J') ORDER BY TMF.CC, TMF.DocDT,TMF.ID,TSTF.ID",
+			"columnlookup":[
+					{
+						"column":"AccNo",						
+						"apipath":"/api/data/07G2C7CjRRysmY1Ob7ZbCw?find=%7B%22type%22%3A31%2C%22code%22%3A%22[param]%22%7D"						
+					},
+					{
+						"column":"CashCode",						
+						"apipath":"/api/data/07G2C7CjRRysmY1Ob7ZbCw?find=%7B%22type%22%3A6%2C%22code%22%3A%22[param]%22%7D"						
+					},
+					{
+						"column":"PayMode",						
+						"apipath":"/api/data/GXG6bu58QVie4g0ER1WKYw?find=%7B%22type%22%3A50%2C%22name%22%3A%22[param]%22%7D"						
+					},
+					{
+						"column":"CC",						
+						"apipath":"/api/data/GXG6bu58QVie4g0ER1WKYw?find=%7B%22type%22%3A4%2C%22code%22%3A%22[param]%22%7D"
+					},
+					{
+						"column":"InvNo",						
+						"apipath":"/api/data/W8rfME7NRACoy0DxJ-kApw?find=%7B%22docno%22%3A%22[param]%22%7D"
+									
+
+					},
+					{
+						"column":"GLCode",						
+						"apipath":"/api/data/07G2C7CjRRysmY1Ob7ZbCw?find=%7B%22type%22%3A6%2C%22code%22%3A%22[param]%22%7D"
+					},
+					{
+						"column":"DocType",						
+						"apipath":"/api/data/GXG6bu58QVie4g0ER1WKYw?find=%7B%22type%22%3A2%2C%22name%22%3A%22[param]%22%7D"
+						
+					},
+					{
+						"column":"Status",						
+						"apipath":"/api/data/GXG6bu58QVie4g0ER1WKYw?find=%7B%22type%22%3A310%2C%22val%22%3A2%2C%22name%22%3A%22[param]%22%7D"						
+					}
+			],
+			"targetpayload":[
+				{ "key": "billInfo", "map":"AccNo", "updated":false, "value":null, "sourcefield":"code", "usequote": true, "isdata":false},
+				{ "key": "billname", "map":"AccNo", "updated":false, "value":null, "sourcefield":"name", "usequote": true, "isdata":false },
+				{ "key": "shipInfo", "map":"AccNo", "updated":false, "value":null, "sourcefield":"code", "usequote": true, "isdata":false },
+				{ "key": "shipname", "map":"AccNo", "updated":false, "value":null, "sourcefield":"name", "usequote": true, "isdata":false},
+				{ "key": "handlers", "map":"", "updated":true, "value":[], "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "due", "map":"", "updated":false, "value":null, "sourcefield":"DueDT", "usequote": true, "isdata":false},
+				{ "key": "date", "map":"", "updated":false, "value":null, "sourcefield":"DocDT", "usequote": true, "isdata":false},
+				{ "key": "lines", "map":"", "updated":false, "value":null, "sourcefield":"", "usequote": true, "isdata":true, "datamap":"payline,invline,glline"},
+				{ "key": "notes", "map":"", "updated":false, "value":null, "sourcefield":"Notes", "usequote": true, "isdata":false},
+				{ "key": "currency", "map":"CC", "updated":false, "value":null, "sourcefield":"id", "usequote": true, "isdata":false},
+				{ "key": "yourref", "map":"", "updated":true, "value":null, "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "custom", "map":"", "updated":true, "value":{}, "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "stockist", "map":"", "updated":true, "value":null, "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "folderId", "map":"", "updated":true, "value":"AAAAAwAAQACAAAAAAAAAAQ", "sourcefield":"", "usequote": true},
+				{ "key": "data", "map":"", "updated":true, "value":"{\"billterm\": [],\"routine\": false,\"retention\": null,\"revers\": false,\"folderCost\": null}", "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "systype", "map": "", "updated":true, "value":"", "sourcefield":"", "usequote": true, "isdata":false},
+				{ "key": "referrer", "map": "", "updated":true, "value":null, "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "commrefer", "map": "", "updated":true, "value":null, "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "docNo", "map": "", "updated":false, "value":null, "sourcefield":"RcpNo", "usequote": true, "isdata":false},
+				{ "key": "deleted", "map": "", "updated":true, "value":[], "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "status", "map": "Status", "updated":false, "value":null, "sourcefield":"id", "usequote": true, "isdata":false},
+				{ "key": "tags", "map": "", "updated":true, "value":[], "sourcefield":"", "usequote": false, "isdata":false},
+				{ "key": "typeId", "map": "DocType", "updated":false, "value":null, "sourcefield":"id", "usequote": true, "isdata":false }
+			],
+			"paymentline":[
+				{ "key": "id", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "qty", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "acctid", "map":"CashCode", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true },
+				{ "key": "flags", "map":"", "updated":true, "value":"C", "sourcefield":"", "isdata":false, "usequote": true},
+				{ "key": "price", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false },
+				{ "key": "amount", "map":"", "updated":false, "value":null, "sourcefield":"OAmt", "isdata":false, "usequote": false },
+				{ "key": "data", "map":"", "updated":false, "value":null, "sourcefield":"", "isdata":true, "datamap":"plinedata", "usequote": false},
+				{ "key": "nett", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "description", "map":"", "updated":false, "value":null, "sourcefield":"RefNo", "isdata":false, "usequote": true},
+				{ "key": "rate", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "tax", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "disc", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "rdisc", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "currid", "map":"CC", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true },
+				{ "key": "acctname", "map":"CashCode", "updated":false, "value":null, "sourcefield":"name", "isdata":false, "usequote": true },
+				{ "key": "acctcode", "map":"CashCode", "updated":false, "value":null, "sourcefield":"code", "isdata":false, "usequote": true },
+				{ "key": "account", "map":"", "updated":false, "value":null, "sourcefield":"", "isdata":true, "datamap":"plineacct", "usequote": false },
+				{ "key": "openCurrency", "map":"", "updated":true, "value":false, "sourcefield":"", "isdata":false , "usequote": false},
+				{ "key": "paymentid", "map":"PayMode", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true }
+			],
+			"invoiceline":[
+				{ "key": "id", "map":"", "updated":true, "value":2, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "qty", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "xref", "map":"InvNo", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true},
+				{ "key": "flags", "map":"", "updated":true, "value":"", "sourcefield":"", "isdata":false, "usequote": true},
+				{ "key": "price", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false},
+				{ "key": "amount", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false},
+				{ "key": "data", "map":"", "updated":false, "value":null, "sourcefield":"", "isdata":true, "datamap":"invlinedata", "usequote": false},
+				{ "key": "nett", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false},
+				{ "key": "description", "map":"", "updated":false, "value":null, "sourcefield":"DetailDescp", "isdata":false, "usequote": true},
+				{ "key": "rate", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "tax", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "disc", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "rdisc", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},	
+				{ "key": "currid", "map":"CC", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true},
+				{ "key": "forex", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": false}
+			],
+			"glline":[
+				{ "key": "id", "map":"", "updated":true, "value":3, "sourcefield":"", "isdata":false, "usequote": false },
+				{ "key": "qty", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "acctid", "map":"CashCode", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true},
+				{ "key": "price", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false},
+				{ "key": "amount", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false},
+				{ "key": "data", "map":"", "updated":false, "value":null, "sourcefield":"", "isdata":true, "datamap":"gllinedata", "usequote": false},
+				{ "key": "nett", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false},
+				{ "key": "rate", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "tax", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "disc", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "rdisc", "map":"", "updated":true, "value":0, "sourcefield":"", "isdata":false, "usequote": false},	
+				{ "key": "acctname", "map":"", "updated":false, "value":null, "sourcefield":"GLName", "isdata":false, "usequote": true},	
+				{ "key": "fullCost", "map":"", "updated":true, "value":false, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "noCost", "map":"", "updated":true, "value":false, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "priceDirty", "map":"", "updated":true, "value":true, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "itemChanged", "map":"", "updated":true, "value":true, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "noPrice", "map":"", "updated":true, "value":true, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "_isitem", "map":"", "updated":true, "value":false, "sourcefield":"", "isdata":false, "usequote": false},
+				{ "key": "acctcode", "map":"", "updated":true, "value":"ADV", "sourcefield":"", "isdata":false, "usequote": true},
+				{ "key": "item", "map":"", "updated":false, "value":null, "sourcefield":"", "isdata":true, "datamap":"gllineitem", "usequote": false},
+				{ "key": "account", "map":"", "updated":false, "value":null, "sourcefield":"", "isdata":true, "datamap":"gllineacct", "usequote": false},
+				{ "key": "forex", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": false}
+			],
+			"dataarray":[
+				{
+					"plinedata":[
+						{"key": "seq", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": true },
+						{"key": "paymentid", "map":"PayMode", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true },
+						{"key": "_description", "map":"", "updated":false, "value":null, "sourcefield":"RefNo", "isdata":false, "usequote": true }
+					],
+					"plineacct":[
+						{"key": "id", "map":"CashCode", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true},
+						{"key": "code", "map":"CashCode", "updated":false, "value":null, "sourcefield":"code", "isdata":false, "usequote": true},
+						{"key": "name", "map":"CashCode", "updated":false, "value":null, "sourcefield":"name", "isdata":false, "usequote": true},
+						{"key": "flags", "map":"", "updated":true, "value":"ABC", "sourcefield":"", "isdata":false, "usequote": true},
+						{"key": "serial", "map":"", "updated":true, "value":false, "sourcefield":"", "isdata":false, "usequote": false}
+					],
+					"invlinedata":[
+						{"key": "toggle", "map":"", "updated":true, "value":1, "sourcefield":"", "valueifmatch": false, "lookupfield":"", "matchvalue":"", "isdata":false, "usequote": false },
+						{"key": "seq", "map":"", "updated":true, "value":2, "sourcefield":"", "valueifmatch": false, "lookupfield":"", "matchvalue":"", "isdata":false, "usequote": true},
+						{"key": "base", "map":"", "updated":false, "value":null, "sourcefield":"Remarks", "valueifmatch": true, "lookupfield":"CC", "matchvalue":"MYR", "isdata":false, "usequote": false},
+						{"key": "forex", "map":"", "updated":true, "value":1, "sourcefield":"", "valueifmatch": false, "lookupfield":"", "matchvalue":"", "isdata":false, "usequote": false},
+						{"key": "apply", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "valueifmatch": false, "lookupfield":"", "matchvalue":"", "isdata":false, "usequote": false}
+					],
+					"gllinedata":[
+						{"key": "seq", "map":"", "updated":true, "value":3, "sourcefield":"", "isdata":false, "usequote": true},
+						{"key": "toggle", "map":"", "updated":true, "value":2, "sourcefield":"", "isdata":false, "usequote": false},
+						{"key": "_description", "map":"", "updated":false, "value":null, "sourcefield":"DetailDescp", "isdata":false, "usequote": true},
+						{"key": "base", "map":"", "updated":false, "value":null, "sourcefield":"Remarks", "valueifmatch": true, "lookupfield":"CC", "matchvalue":"MYR", "isdata":false, "usequote": false},
+						{"key": "forex", "map":"", "updated":true, "value":1, "sourcefield":"", "isdata":false, "usequote": false},
+						{"key": "apply", "map":"", "updated":false, "value":null, "sourcefield":"LAmt", "isdata":false, "usequote": false}
+					],
+					"gllineitem":[
+						{"key": "id", "map":"GLCode", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true},
+						{"key": "name", "map":"GLCode", "updated":false, "value":null, "sourcefield":"name", "isdata":false, "usequote": true},
+						{"key": "code", "map":"GLCode", "updated":false, "value":null, "sourcefield":"code", "isdata":false, "usequote": true},
+						{"key": "flags", "map":"", "updated":true, "value":"A", "sourcefield":"", "isdata":false, "usequote": true},
+						{"key": "type", "map":"", "updated":true, "value":6, "sourcefield":"", "isdata":false, "usequote": false}
+					],
+					"gllineacct":[
+						{"key": "id", "map":"GLCode", "updated":false, "value":null, "sourcefield":"id", "isdata":false, "usequote": true},
+						{"key": "name", "map":"GLCode", "updated":false, "value":null, "sourcefield":"name", "isdata":false, "usequote": true},
+						{"key": "code", "map":"GLCode", "updated":false, "value":null, "sourcefield":"code", "isdata":false, "usequote": true}
+					]
+				}
+			]
+
+		},
+		"Active":1
+  }
+}
