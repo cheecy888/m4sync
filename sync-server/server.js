@@ -272,7 +272,7 @@ function format_payload(objpayload, datarray){
                                             }
 
                                     }else{
-                                         
+                                            /* Here, if lookup json OK status = false, log into log record */
                                     }       
                         }
                     }
