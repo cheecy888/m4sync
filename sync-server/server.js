@@ -4,7 +4,7 @@
     const app = express(); // Creating an express app    
     var configdata, dbpathconfig;
     var mssqlpath, defquery, collookup, colvar=[], payload, payline, invline, glline;
-    var authkey = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpbnRlZ3JhdGVkLmRldi5kYXR1bWNvcnAuY29tIiwic3ViIjoiQVpWemVDdlNkbUdJUWVSTlZSNVpidyIsImV4cCI6MTc1ODUxMTIyNCwiYXBwIjoiQVdFQiIsImlhdCI6MTc0MjYxMzYyM30.gX6jwfMGatmUEoh4iweAF9A-kEzOKryT_5DuT5tO5jy1N10rM-Uggz_0PReV6ATMSBXu5XFn0vBFzdlVusw1Sqopq8TYvDd_7PR8Bb-VC_KD_wojTrgzxNjV7pxVrzspzFVZ8g6oMk69Z7SVci5NXWT7gXg34wU1HlwpfKFXjuJ36mBySWyDaA1ufZcDdbSCf7gnEnfnTHMxkrx7y75c03P2jZbwFrK50C97dFLEGhmR9bcdlsY6ABd_ajTgBxcThO8l0bzSxehPcIoI-7gG_zhDDAwebP7iqD2h7wpxka9H4_yLfwpBiOJcOFwFChrEQ_fdMvs2JJKv10P2cDsKGpv8Wka0urydjTxFPKIMsCcoeaoj7tKwmm5PCTg7Gvcmp6dwLDfoHAp2GFs-1ZNm1RzFznVv6vnYb69bgUC4hShp-pX8e2hcRPnoSn8HI0DkNoUaTazF3PnZ5vXAeoRcqEDnUIaaYfKu6uM0ZJ2qKktSCbz4yQ959VZ8QFh4PGWR47UEgX6DaiS4hDf8vQxg3HoiR0PNjC9F5H10--CF0mEwJZmT6XvnvHm4bq2uuNFRKRn7WSxKS8ccvp5Pgck1FZj0-W5li8qfmxd94h8rn_Eds-5UZbevre0EWNSvsm6Trjab7mYtxwNIZQaESE_4YtD36H4P1ugOdWJttYn6B2U";
+    var authkey = "";
     var respjson;
 
     const util = require('util');
